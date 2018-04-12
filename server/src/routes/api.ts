@@ -11,6 +11,6 @@ export default function initApi(app: Application, config: any, database: IDataba
   app.post(API_BASE + "/passports/user", passportController.getPassport);
   
   app.get(API_BASE + "/test", (req, res) => {
-    res.status(200).send({data: "test"});
+    res.status(200).json({data: "test"});
   });
 }
