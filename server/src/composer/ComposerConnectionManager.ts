@@ -98,17 +98,17 @@ export default class ComposerConnectionManager {
    * @param {string} userId
    * @param {string} enrollmentSecret
    */
-  importNewIdCard(userId: string, enrollmentSecret: string): Promise<any> {
-    const adminConnection = new AdminConnection({ cardStore: this.cardStore});
+  importNewIdCard(cardName: string, enrollmentSecret: string): Promise<any> {
+    const adminConnection = new AdminConnection({ cardStore: this.cardStore });
     const idCard = new IdCard(
       { 
-        userName: userId, 
+        userName: cardName, 
         enrollmentSecret: enrollmentSecret, 
         businessNetwork: ComposerConnectionManager.BUSINESS_NETWORK 
       }, 
       ComposerConnectionManager.CONNECTION_PROFILE
     );
-    return adminConnection.importCard(userId.trim(), idCard);
+    return adminConnection.importCard(cardName.trim(), idCard);
   }
 
   /**
@@ -117,11 +117,11 @@ export default class ComposerConnectionManager {
    * @param {string} userId
    * @param {IdCard} card
    */
-  importIdCard(userId: string, card: IdCard): Promise<any> {
+  importIdCard(cardName: string, card: IdCard): Promise<any> {
     const adminConnection = new AdminConnection({ cardStore: this.cardStore });
-    return adminConnection.importCard(userId.trim(), card);
+    return adminConnection.importCard(cardName.trim(), card);
   }
-
+  
   getCard(cardName: string) {
     return this.cardStore.get(cardName);
   }

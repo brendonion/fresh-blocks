@@ -6,7 +6,6 @@ export interface IPassport extends Mongoose.Document {
   firstName: string;
   lastName: string;
   password: string;
-  cardId: string,
   createdAt: Date;
   updateAt: Date;
   validatePassword(requestPassword): boolean;
@@ -18,7 +17,6 @@ export const PassportSchema = new Mongoose.Schema(
     firstName: {type: String, unique: false, required: true},
     lastName: {type: String, unique: false, required: true},
     password: {type: String, required: true},
-    cardId: {type: String, unique: false, required: true},
   },
   {
     timestamps: true
