@@ -1,0 +1,11 @@
+# files
+.tscache
+.baseDir.ts
+.env
+.DS_Store
+
+# folders
+dist
+node_modules
+
+notes.md
