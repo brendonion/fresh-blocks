@@ -1,6 +1,6 @@
 {
   "name": "freshblocks",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Blockchain network for Fresh Ladder",
   "scripts": {
     "pretest": "npm run lint",

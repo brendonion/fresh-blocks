@@ -1,9 +1,6 @@
-/**
- * Sample access control list.
- */
 rule EverybodyCanReadEverything {
     description: "Allow all participants read access to all resources"
-    participant: "org.freshworks.SampleParticipant"
+    participant: "org.freshworks.User"
     operation: READ
     resource: "org.freshworks.*"
     action: ALLOW
@@ -11,7 +8,7 @@ rule EverybodyCanReadEverything {
 
 rule EverybodyCanSubmitTransactions {
     description: "Allow all participants to submit transactions"
-    participant: "org.freshworks.SampleParticipant"
+    participant: "org.freshworks.User"
     operation: CREATE
     resource: "org.freshworks.SampleTransaction"
     action: ALLOW
@@ -19,7 +16,7 @@ rule EverybodyCanSubmitTransactions {
 
 rule OwnerHasFullAccessToTheirAssets {
     description: "Allow all participants full access to their assets"
-    participant(p): "org.freshworks.SampleParticipant"
+    participant(p): "org.freshworks.User"
     operation: ALL
     resource(r): "org.freshworks.SampleAsset"
     condition: (r.owner.getIdentifier() === p.getIdentifier())
