@@ -72,20 +72,19 @@ export default class ComposerConnectionManager {
   /**
    * Constructor for ComposerConnectionManager
    */
-  constructor(private database: IDatabase) { //private logger: LoggerInstance) {
+  constructor(private database: IDatabase) {
     this.cardStore = new MongooseCardStore(database);
   }
 
   /**
    * Create a new business network connection to the Hyperledger Fabric network for a specific user
-   * @param {string} cardName
    */
   createBusinessNetworkConnection(cardName: string): Promise<ComposerConnection> {
-    const bizNetworkConnection = new BusinessNetworkConnection({cardStore: this.cardStore});
+    const bizNetworkConnection = new BusinessNetworkConnection({ cardStore: this.cardStore });
     return new Promise<ComposerConnection>((resolve, reject) => {
       bizNetworkConnection.connect(cardName)
         .then((businessNetworkDefinition) => {
-          resolve(new ComposerConnection(bizNetworkConnection, businessNetworkDefinition, new ComposerModelFactory(businessNetworkDefinition)) );
+          resolve(new ComposerConnection(bizNetworkConnection, businessNetworkDefinition, new ComposerModelFactory(businessNetworkDefinition)));
         }).catch((error) => {
           console.log(`Something went wrong while connecting to business network ${error}`);
           reject(error);
@@ -95,8 +94,6 @@ export default class ComposerConnectionManager {
 
   /**
    * Import a new id card into Hyperledger Composer
-   * @param {string} userId
-   * @param {string} enrollmentSecret
    */
   importNewIdCard(cardName: string, enrollmentSecret: string): Promise<any> {
     const adminConnection = new AdminConnection({ cardStore: this.cardStore });
@@ -114,8 +111,6 @@ export default class ComposerConnectionManager {
   /**
    * Import a new id card into Hyperledger Composer
    * This requires an admin connection instead of normal business network connection
-   * @param {string} userId
-   * @param {IdCard} card
    */
   importIdCard(cardName: string, card: IdCard): Promise<any> {
     const adminConnection = new AdminConnection({ cardStore: this.cardStore });

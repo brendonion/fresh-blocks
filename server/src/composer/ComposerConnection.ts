@@ -6,9 +6,6 @@ export class ComposerConnection {
 
   /**
    * Constructor
-   * @param {BusinessNetworkConnection} bizNetworkConnection
-   * @param businessNetworkDefinition
-   * @param {ComposerModelFactory} composerModelFactory
    */
   constructor(
     public bizNetworkConnection: BusinessNetworkConnection,
@@ -18,8 +15,6 @@ export class ComposerConnection {
 
   /**
    * Convert hyperledger composer ledger data to a usable json object
-   * @param object
-   * @returns {any}
    */
   serializeToJSON(object: any): any {
     return this.businessNetworkDefinition.getSerializer().toJSON(object);
@@ -27,9 +22,6 @@ export class ComposerConnection {
 
   /**
    * Convert JSON string to hyperledger composer ledger data
-   * @param object
-   * @param object
-   * @returns {any}
    */
   serializeFromJSONObject(jsonObject: any): any {
     return this.businessNetworkDefinition.getSerializer().fromJSON(jsonObject);
@@ -37,8 +29,6 @@ export class ComposerConnection {
 
   /**
    * Execute a Hyperledger Composer query
-   * @param {string} name
-   * @param params
    */
   query(name: string, params: any = {}): any {
     return this.bizNetworkConnection.query(name, params);
@@ -46,7 +36,6 @@ export class ComposerConnection {
 
   /**
    * Execute a Hyperledger Composer Transaction
-   * @param {string} resource
    */
   submitTransaction(resource: string): any {
     return this.bizNetworkConnection.submitTransaction(resource);
@@ -54,7 +43,6 @@ export class ComposerConnection {
 
   /**
    * Disconnect business network connection
-   * @returns {Promise<void>}
    */
   disconnect(): Promise<void> {
     return this.bizNetworkConnection.disconnect();
@@ -62,8 +50,6 @@ export class ComposerConnection {
 
   /**
    * Get composer identity
-   * @param {string} identityName
-   * @returns {Promise<any>}
    */
   getIdentity(identityName: string): Promise<any> {
     return this.bizNetworkConnection.getIdentityRegistry()
@@ -82,8 +68,6 @@ export class ComposerConnection {
 
   /**
    * Revoke composer identity
-   * @param identity
-   * @returns {Promise<void>}
    */
   revokeIdentity(identity: any): Promise<void> {
     return this.bizNetworkConnection.revokeIdentity(identity);

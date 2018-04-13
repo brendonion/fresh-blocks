@@ -4,7 +4,7 @@ import * as path from "path";
 import * as logger from "morgan";
 import * as errorHandler from "errorhandler";
 import * as fs from "fs";
-import { IdCard } from 'composer-common';
+import { IdCard } from "composer-common";
 import MongoDatabase from "./database/MongoDatabase";
 import ComposerConnectionManager from "./composer/ComposerConnectionManager";
 import initApi from "./routes/api";
@@ -116,5 +116,5 @@ async function addAdminUser(database: any, hyperledgerConfig: any, connectionMan
   await database.passportModel.remove({email: 'admin@freshblocks.com'});
   await database.passportModel.create(adminPassport);
 
-  console.log(`Admin created ${adminPassport}`);
+  console.log(`Admin created`);
 }

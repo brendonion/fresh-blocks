@@ -20,6 +20,7 @@ export default class PassportController {
    */
   authenticate = (req: Express.Request, res: Express.Response, next: Function) => {
     if (req.path.includes("/passports/token")) return next();
+    if (req.path.includes("/passports/signup")) return next();
     if (!req.headers.authorization) {
       return res.status(403).json({ error: 'Not authorized' });
     }
@@ -27,7 +28,7 @@ export default class PassportController {
       if (err) {
         res.status(401).json({ error: err.message });
       }
-      res.locals.userId = decoded.id;
+      res.locals.userEmail = decoded.sub;
       next();
     });
   }
@@ -41,21 +42,34 @@ export default class PassportController {
   signup = async (req: Express.Request, res: Express.Response) => {
     try {
       await this.connectionManager.importNewIdCard(req.body.email, 'secret');
-    } catch (err) {
-      return res.status(500).json({ error: err.message });
+      
+      const userPassport = {
+        email: req.body.email,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        password: req.body.password,
+      };
+      
+      await this.database.passportModel.create(userPassport);
+      
+      const { password, ...response } = userPassport;
+      
+      return res.status(200).json({ passport: response });
+    } catch (error) {
+      return res.status(500).json({ error });
     }
+  }
 
-    const userPassport = {
-      email: req.body.email,
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      password: req.body.password,
-    };
-
-    await this.database.passportModel.create(userPassport);
-    const { password, ...response } = userPassport;
-    
-    return res.status(200).json({ passport: response });
+  test = async (req: Express.Request, res: Express.Response) => {
+    try {
+      const connection = await this.connectionManager.createBusinessNetworkConnection('test2@test.com');
+      const registry = await connection.bizNetworkConnection.getAssetRegistry('org.freshworks.SampleAsset');
+      const data = await registry.getAll();
+  
+      return res.status(200).json({ data });
+    } catch (error) {
+      return res.status(500).json({ error: error.message || "Something went wrong" });
+    }
   }
 
   /***

@@ -19,12 +19,13 @@ export default class MongooseCardStore extends BusinessNetworkCardStore {
    * get card
    * @param cardName
    */
-  get(cardName): Promise<IComposerCard | void> {
+  get(cardName: string): Promise<IdCard | void> {
     console.log(`retrieving card ${cardName} ...`);
-    return this.database.composerCardModel.findOne({ cardName: cardName }).lean(true)
+    return this.database.composerCardModel.findOne({ cardName }).lean(true)
       .then((composerCard: IComposerCard) => {
         if (composerCard) {
-          return composerCard;
+          console.log(`Card ${composerCard.userName} found`);
+          return this.convertToIdCard(composerCard);
         } else {
           this.throwCardDoesNotExistError(cardName);
         }

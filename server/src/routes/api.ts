@@ -16,5 +16,6 @@ export default function initApi(
   app.post("/passports/signup", passportController.signup);
   app.post("/passports/token", passportController.getToken);
   app.post("/passports/user", passportController.getPassport);
-  
+  app.get("/test", passportController.test);
+
 }
