@@ -4,7 +4,7 @@ import * as path from "path";
 import * as logger from "morgan";
 import * as errorHandler from "errorhandler";
 import * as fs from "fs";
-import { IdCard } from 'composer-common';
+import { IdCard } from "composer-common";
 import MongoDatabase from "./database/MongoDatabase";
 import ComposerConnectionManager from "./composer/ComposerConnectionManager";
 import initApi from "./routes/api";
@@ -20,9 +20,6 @@ export default class Server {
 
   /**
    * Constructor.
-   *
-   * @class Server
-   * @constructor
    */
   constructor() {
     // create expressjs application
@@ -34,10 +31,6 @@ export default class Server {
 
   /**
    * Bootstrap the application.
-   *
-   * @class Server
-   * @method bootstrap
-   * @static
    */
   public static bootstrap(): Server {
     return new Server();
@@ -45,9 +38,6 @@ export default class Server {
 
   /**
    * Configure application
-   *
-   * @class Server
-   * @method config
    */
   public config() {
     // Add static paths
@@ -77,9 +67,6 @@ export default class Server {
 
   /**
    * Initialize application
-   *
-   * @class Server
-   * @method config
    */
   public async initialize() {
     const env = process.env.NODE_ENV || "development";
@@ -118,19 +105,16 @@ async function addAdminUser(database: any, hyperledgerConfig: any, connectionMan
     console.log('Card cannot be loaded: ', err);
   }
 
-  const newCard = await connectionManager.getCard(hyperledgerConfig.adminBusinessNetworkCardName);
-
   const adminPassport = {
     email: 'admin@freshblocks.com',
     firstName: 'admin',
     lastName: 'adminL',
     password: 'password',
-    cardId: newCard._id,
   };
 
   // Save admin passport to database
   await database.passportModel.remove({email: 'admin@freshblocks.com'});
   await database.passportModel.create(adminPassport);
 
-  console.log(`Admin created ${adminPassport}`);
+  console.log(`Admin created`);
 }

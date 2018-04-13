@@ -1,16 +1,21 @@
-import { Application } from "express";
+import * as Express from "express";
 import { IDatabase } from "../database/database";
+import ComposerConnectionManager from "../composer/ComposerConnectionManager";
 import PassportController from "../passports/PassportController";
 
+export default function initApi(
+  app: Express.Application, 
+  config: any, 
+  database: IDatabase, 
+  connectionManager: ComposerConnectionManager
+) {
 
-export default function initApi(app: Application, config: any, database: IDatabase, connectionManager: any) {
-  const API_BASE = process.env.API_BASE;
-  const passportController = new PassportController(config, database);
+  const passportController = new PassportController(config, database, connectionManager);
 
-  app.post(API_BASE + "/passports/token", passportController.getToken);
-  app.post(API_BASE + "/passports/user", passportController.getPassport);
-  
-  app.get(API_BASE + "/test", (req, res) => {
-    res.status(200).json({data: "test"});
-  });
+  app.all("/*", passportController.authenticate);
+  app.post("/passports/signup", passportController.signup);
+  app.post("/passports/token", passportController.getToken);
+  app.post("/passports/user", passportController.getPassport);
+  app.get("/test", passportController.test);
+
 }
