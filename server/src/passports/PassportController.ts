@@ -39,31 +39,43 @@ export default class PassportController {
    * Create composer card from user email
    * Add card and user information to database
    */
-  signup = async (req: Express.Request, res: Express.Response) => {
+  signup = async (req: Express.Request, res: Express.Response): Promise<any> => {
+    // TODO: validate request body
     try {
-      await this.connectionManager.importNewIdCard(req.body.email, 'secret');
-      
       const userPassport = {
         email: req.body.email,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         password: req.body.password,
       };
+      const cardName = userPassport.email;
+      const { adminBusinessNetworkCardName } = this.config.hyperledger;
+      const adminConnection = await this.connectionManager.createBusinessNetworkConnection(adminBusinessNetworkCardName);
+      const userRegistry = await adminConnection.bizNetworkConnection.getParticipantRegistry("org.freshworks.User");
+      const userResource = adminConnection.composerModelFactory.createUser(userPassport);
       
+      await userRegistry.add(userResource);
+      const newIdentity = await adminConnection.bizNetworkConnection.issueIdentity(`org.freshworks.User#${userResource.userId}`, userResource.userId);
+      // TODO: generate secret or have the user send up a secret
+      await this.connectionManager.importNewIdCard(cardName, newIdentity.userSecret);
       await this.database.passportModel.create(userPassport);
-      
+
       const { password, ...response } = userPassport;
+      adminConnection.disconnect();
       
       return res.status(200).json({ passport: response });
     } catch (error) {
+      console.log('error: ', error);
+      // TODO: delete card, user resource, and passport if anything fails
       return res.status(500).json({ error });
     }
   }
 
   test = async (req: Express.Request, res: Express.Response) => {
     try {
-      const connection = await this.connectionManager.createBusinessNetworkConnection('test2@test.com');
-      const registry = await connection.bizNetworkConnection.getAssetRegistry('org.freshworks.SampleAsset');
+      const cardName = res.locals.userEmail;
+      const connection = await this.connectionManager.createBusinessNetworkConnection(cardName);
+      const registry = await connection.bizNetworkConnection.getIdentityRegistry();
       const data = await registry.getAll();
   
       return res.status(200).json({ data });

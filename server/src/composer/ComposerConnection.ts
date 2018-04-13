@@ -1,6 +1,5 @@
 import { BusinessNetworkConnection } from 'composer-client';
 import { ComposerModelFactory } from './ComposerModelFactory';
-import { ComposerModel, ComposerTypes } from './ComposerModel';
 
 export class ComposerConnection {
 

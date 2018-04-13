@@ -1,33 +1,17 @@
 export class ComposerModel {
 
-  // static QUERY = {
-  //   SELECT_ALL_TRUCKS_FOR_DRIVER: 'selectAllTrucksForDriver',
-  //   SELECT_ALL_DRIVERS: 'selectAllDrivers'
-  // };
-
-  // static PARTICIPANT = {
-  //   DRIVER: 'Driver'
-  // };
-
-  // static CONCEPT = {
-  //   ADDRESS: 'Address'
-  // };
-
-  // static ASSET = {
-  //   CARGO: 'Cargo',
-  //   TRUCK: 'Truck'
-  // };
-
-  // static TRANSACTION = {
-  //   CHANGE_TRUCK_DRIVER: 'ChangeTruckDriver'
-  // };
-
   static NAMESPACE = 'org.freshworks';
-}
 
-export enum ComposerTypes {
-  // Driver,
-  // Cargo,
-  // Truck,
-  // ChangeTruckDriver
+  static PARTICIPANT = {
+    USER: 'User'
+  };
+
+  static ASSET = {
+    SAMPLE_ASSET: 'SampleAsset',
+  };
+
+  static TRANSACTION = {
+    SAMPLE_TRANSACTION: 'SampleTransaction',
+  };
+
 }
