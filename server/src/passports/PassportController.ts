@@ -13,7 +13,7 @@ export default class PassportController {
   ) {}
 
   /**
-   * Authenticates each request
+   * Authenticates each request.
    */
   authenticate = (req: Express.Request, res: Express.Response, next: Function) => {
     if (req.path.includes("/passports/token")) return next();
@@ -40,7 +40,7 @@ export default class PassportController {
    * Adds user to User registry and issues an identity.
    * Card and user information is stored in the database.
    */
-  signup = async (req: Express.Request, res: Express.Response): Promise<any> => {
+  signup = async (req: Express.Request, res: Express.Response): Promise<Express.Response> => {
     // TODO: validate request body
     try {
       const userPassport = {
@@ -76,7 +76,7 @@ export default class PassportController {
     }
   }
 
-  test = async (req: Express.Request, res: Express.Response) => {
+  test = async (req: Express.Request, res: Express.Response): Promise<Express.Response> => {
     try {
       const cardName = res.locals.userEmail;
       const connection = await this.connectionManager.createBusinessNetworkConnection(cardName);
@@ -89,14 +89,14 @@ export default class PassportController {
     }
   }
 
-  /***
+  /**
    * API route
    * 
-   * Look up the passport by the the supplied user credentials
-   * Return token and passport information
-   * This token can be used for authentication for future REST server requests
+   * Look up the passport with supplied user credentials.
+   * Return token and passport information.
+   * This token can be used for authentication for future REST server requests.
    */
-  getToken = async (req: Express.Request, res: Express.Response) => {
+  getToken = async (req: Express.Request, res: Express.Response): Promise<Express.Response> => {
     const email = req.body.email;
     const password = req.body.password;
     const passport: IPassport = await this.database.passportModel.findOne({ email });
@@ -109,7 +109,7 @@ export default class PassportController {
       return res.status(400).json({ message: "Password is invalid" });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       token: this.generateToken(passport),
       firstName: passport.firstName,
       lastName: passport.lastName,
@@ -120,19 +120,19 @@ export default class PassportController {
   /**
    * API route
    * 
-   * Get passport for user by token
+   * Get passport for user by token.
    */
-  getPassport = async (req: Express.Request, res: Express.Response): Promise<void> => {
+  getPassport = async (req: Express.Request, res: Express.Response): Promise<Express.Response> => {
     const email = req.body.email;
     const passport: IPassport = await this.database.passportModel
       .findOne({ email })
       .select('-_id -__v -password');
 
-    res.status(200).json({ passport });
+    return res.status(200).json({ passport });
   }
 
   /**
-   * Generate a Json Web Token for the user request
+   * Generate a Json Web Token for the user request.
    */
   private generateToken = (passport: IPassport): string => {
     const { secret, expiration, algorithm, issuer, audience } = this.config.server.jwt;

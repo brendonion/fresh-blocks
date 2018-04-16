@@ -30,11 +30,11 @@ function hashPassword(password: string): string {
   return Bcrypt.hashSync(password, Bcrypt.genSaltSync(10));
 }
 
-PassportSchema.methods.validatePassword = function(requestPassword: string) {
+PassportSchema.methods.validatePassword = function(requestPassword: string): boolean {
   return Bcrypt.compareSync(requestPassword, this.password);
 };
 
-PassportSchema.pre('save', function (next) {
+PassportSchema.pre('save', function(next) {
   const user = this;
 
   if (!user.isModified('password')) {
@@ -46,7 +46,7 @@ PassportSchema.pre('save', function (next) {
   return next();
 });
 
-PassportSchema.pre('findOneAndUpdate', function () {
+PassportSchema.pre('findOneAndUpdate', function() {
   const password = hashPassword(this.getUpdate().$set.password);
 
   if (!password) {

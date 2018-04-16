@@ -69,15 +69,12 @@ export default class ComposerConnectionManager {
 
   private cardStore: MongooseCardStore;
 
-  /**
-   * Constructor for ComposerConnectionManager
-   */
   constructor(private database: IDatabase) {
     this.cardStore = new MongooseCardStore(database);
   }
 
   /**
-   * Create a new business network connection to the Hyperledger Fabric network for a specific user
+   * Create a new business network connection to the Hyperledger Fabric network for a specific user.
    */
   createBusinessNetworkConnection(cardName: string): Promise<ComposerConnection> {
     const bizNetworkConnection = new BusinessNetworkConnection({ cardStore: this.cardStore });
@@ -93,7 +90,7 @@ export default class ComposerConnectionManager {
   }
 
   /**
-   * Import a new id card into Hyperledger Composer
+   * Import a new id card into Hyperledger Composer.
    */
   importNewIdCard(cardName: string, enrollmentSecret: string): Promise<any> {
     const adminConnection = new AdminConnection({ cardStore: this.cardStore });
@@ -109,8 +106,8 @@ export default class ComposerConnectionManager {
   }
 
   /**
-   * Import a new id card into Hyperledger Composer
-   * This requires an admin connection instead of normal business network connection
+   * Import a new id card into Hyperledger Composer.
+   * This requires an admin connection instead of normal business network connection.
    */
   importIdCard(cardName: string, card: IdCard): Promise<any> {
     const adminConnection = new AdminConnection({ cardStore: this.cardStore });

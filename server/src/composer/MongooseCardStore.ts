@@ -8,16 +8,12 @@ import { IComposerCard } from './card';
  */
 export default class MongooseCardStore extends BusinessNetworkCardStore {
 
-  /**
-   * Constructor.
-   */
   constructor(private database: IDatabase) {
     super();
   }
 
   /**
-   * get card
-   * @param cardName
+   * Get card.
    */
   get(cardName: string): Promise<IdCard | void> {
     console.log(`retrieving card ${cardName} ...`);
@@ -35,9 +31,7 @@ export default class MongooseCardStore extends BusinessNetworkCardStore {
   }
 
   /**
-   * put card into the store
-   * @param cardName
-   * @param card
+   * Put card into the database.
    */
   put(cardName: string, card: IdCard) {
     console.log(`putting card ${cardName} ...`);
@@ -65,7 +59,7 @@ export default class MongooseCardStore extends BusinessNetworkCardStore {
   }
 
   /**
-   * get all cards from store
+   * Get all cards from database.
    */
   getAll() {
     console.log(`getting all cards from store ...`);
@@ -80,8 +74,7 @@ export default class MongooseCardStore extends BusinessNetworkCardStore {
   }
 
   /**
-   * delete card from store
-   * @param cardName
+   * Delete card from database.
    */
   delete(cardName) {
     console.log(`deleting card ${cardName} ...`);
@@ -94,8 +87,7 @@ export default class MongooseCardStore extends BusinessNetworkCardStore {
   }
 
   /**
-   * Check if card is available in the store
-   * @param cardName
+   * Check if card is available in the store.
    */
   has(cardName): boolean | void {
     console.log(`checking if card ${cardName} exists ...`);
@@ -107,6 +99,9 @@ export default class MongooseCardStore extends BusinessNetworkCardStore {
       });
   }
 
+  /**
+   * Empty method to ignore error.
+   */
   getWallet() {}
 
   private throwCardDoesNotExistError(cardName: string) {

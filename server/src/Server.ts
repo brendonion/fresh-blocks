@@ -9,18 +9,10 @@ import MongoDatabase from "./database/MongoDatabase";
 import ComposerConnectionManager from "./composer/ComposerConnectionManager";
 import initApi from "./routes/api";
 
-/**
- * The server.
- *
- * @class Server
- */
 export default class Server {
 
   app: express.Application;
 
-  /**
-   * Constructor.
-   */
   constructor() {
     // create expressjs application
     this.app = express();
@@ -76,9 +68,8 @@ export default class Server {
     // Initialize database
     await database.initialize();
 
+    // Create admin connection
     const connectionManager = new ComposerConnectionManager(database);
-
-    await addAdminUser(database, config.hyperledger, connectionManager);
 
     // Handle api routes
     initApi(this.app, config, database, connectionManager);
