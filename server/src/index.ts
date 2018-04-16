@@ -16,7 +16,7 @@ const httpServer = http.createServer(app);
 
 // Listen on provided ports
 httpServer.listen(httpPort, () => {
-  console.log(("  App is running at http://localhost:%d in %s mode"), app.get("port"), app.get("env"));
+  console.log(("\n  App is running at http://localhost:%d in %s mode"), app.get("port"), app.get("env"));
   console.log("  Press CTRL-C to stop\n");
 });
 

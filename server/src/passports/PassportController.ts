@@ -57,14 +57,18 @@ export default class PassportController {
       
       // Add user resource to registry
       await userRegistry.add(userResource);
+      
       // Issue identity to the new user using the admin connection
       const newIdentity = await adminConnection.bizNetworkConnection.issueIdentity(`org.freshworks.User#${userResource.userId}`, userResource.userId);
+      
       // Import new card to hyperledger and the database
       await this.connectionManager.importNewIdCard(cardName, newIdentity.userSecret);
+      
       // Create user in database
       await this.database.passportModel.create(userPassport);
 
       const { password, ...response } = userPassport;
+      
       // Disconnect the admin connection
       adminConnection.disconnect();
       
