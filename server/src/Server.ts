@@ -16,7 +16,7 @@ import initApi from "./routes/api";
  */
 export default class Server {
 
-  public app: express.Application;
+  app: express.Application;
 
   /**
    * Constructor.
@@ -32,14 +32,14 @@ export default class Server {
   /**
    * Bootstrap the application.
    */
-  public static bootstrap(): Server {
+  static bootstrap(): Server {
     return new Server();
   }
 
   /**
-   * Configure application
+   * Configure application.
    */
-  public config() {
+  config() {
     // Add static paths
     this.app.use(express.static(path.join(__dirname, "public")));
 
@@ -66,9 +66,9 @@ export default class Server {
   }
 
   /**
-   * Initialize application
+   * Initialize application.
    */
-  public async initialize() {
+  async initialize() {
     const env = process.env.NODE_ENV || "development";
     const config = require(__dirname + "/config/index")[env];
     const database = new MongoDatabase(config.database);

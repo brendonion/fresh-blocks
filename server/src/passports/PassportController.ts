@@ -13,20 +13,20 @@ export default class PassportController {
   ) {}
 
   /**
-   * API route
-   * 
-   * Create composer card from user email
-   * Add card and user information to database
+   * Authenticates each request
    */
   authenticate = (req: Express.Request, res: Express.Response, next: Function) => {
     if (req.path.includes("/passports/token")) return next();
+    
     if (req.path.includes("/passports/signup")) return next();
+    
     if (!req.headers.authorization) {
       return res.status(403).json({ error: 'Not authorized' });
     }
+
     Jwt.verify(req.headers.authorization, this.config.server.jwt.secret, (err, decoded) => {
       if (err) {
-        res.status(401).json({ error: err.message });
+        return res.status(401).json({ error: err.message });
       }
       res.locals.userEmail = decoded.sub;
       next();
@@ -36,8 +36,9 @@ export default class PassportController {
   /**
    * API route
    * 
-   * Create composer card from user email
-   * Add card and user information to database
+   * Creates a composer card from user email.
+   * Adds user to User registry and issues an identity.
+   * Card and user information is stored in the database.
    */
   signup = async (req: Express.Request, res: Express.Response): Promise<any> => {
     // TODO: validate request body
@@ -54,13 +55,17 @@ export default class PassportController {
       const userRegistry = await adminConnection.bizNetworkConnection.getParticipantRegistry("org.freshworks.User");
       const userResource = adminConnection.composerModelFactory.createUser(userPassport);
       
+      // Add user resource to registry
       await userRegistry.add(userResource);
+      // Issue identity to the new user using the admin connection
       const newIdentity = await adminConnection.bizNetworkConnection.issueIdentity(`org.freshworks.User#${userResource.userId}`, userResource.userId);
-      // TODO: generate secret or have the user send up a secret
+      // Import new card to hyperledger and the database
       await this.connectionManager.importNewIdCard(cardName, newIdentity.userSecret);
+      // Create user in database
       await this.database.passportModel.create(userPassport);
 
       const { password, ...response } = userPassport;
+      // Disconnect the admin connection
       adminConnection.disconnect();
       
       return res.status(200).json({ passport: response });

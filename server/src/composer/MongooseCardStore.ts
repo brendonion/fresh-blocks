@@ -1,6 +1,6 @@
 import { IdCard, BusinessNetworkCardStore } from 'composer-common';
 import { IDatabase } from '../database/database';
-import { IComposerCard } from './ComposerCard';
+import { IComposerCard } from './card';
 
 /**
  * Manages persistence of business network cards to a Mongo database

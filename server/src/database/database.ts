@@ -1,6 +1,6 @@
 import * as Mongoose from "mongoose";
 import { IPassport } from "../passports/passport";
-import { IComposerCard } from '../composer/ComposerCard';
+import { IComposerCard } from '../composer/card';
 
 export interface IDatabase {
   passportModel: Mongoose.Model<IPassport>;

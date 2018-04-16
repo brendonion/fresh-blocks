@@ -1,6 +1,6 @@
 import * as Mongoose from "mongoose";
 import { IPassport, PassportModel } from "../passports/passport";
-import { ComposerCardModel, IComposerCard } from '../composer/ComposerCard';
+import { ComposerCardModel, IComposerCard } from '../composer/card';
 import { IDatabase } from './database';
 //import { LoggerInstance } from 'winston';
 
