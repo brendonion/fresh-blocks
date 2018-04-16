@@ -6,7 +6,7 @@ import { IComposerCard } from './card';
  * Manages persistence of business network cards to a Mongo database
  * Extends BusinessNetworkCardStore form implementation
  */
-export default class MongooseCardStore extends BusinessNetworkCardStore {
+export default class MongoCardStore extends BusinessNetworkCardStore {
 
   constructor(private database: IDatabase) {
     super();

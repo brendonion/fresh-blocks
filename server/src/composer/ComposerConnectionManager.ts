@@ -3,7 +3,7 @@ import { BusinessNetworkConnection } from "composer-client";
 import { IdCard } from "composer-common";
 import { ComposerConnection } from "./ComposerConnection";
 import { ComposerModelFactory } from "./ComposerModelFactory";
-import MongooseCardStore from "./MongooseCardStore";
+import MongoCardStore from "./MongoCardStore";
 import { IDatabase } from "../database/database";
 
 export default class ComposerConnectionManager {
@@ -21,17 +21,15 @@ export default class ComposerConnectionManager {
           "peer": {
             "endorser": "300",
             "eventHub": "300",
-            "eventReg": "300"
+            "eventReg":"300"
           },
-          "orderer": "300"
+          "orderer":"300"
         }
       }
     },
     "channels": {
       "composerchannel": {
-        "orderers": [
-          "orderer.example.com"
-        ],
+        "orderers": ["orderer.example.com"],
         "peers": {
           "peer0.org1.example.com": {}
         }
@@ -39,20 +37,16 @@ export default class ComposerConnectionManager {
     },
     "organizations": {
       "Org1": {
-        "mspid": "Org1MSP",
-        "peers": [
-          "peer0.org1.example.com"
-        ],
-        "certificateAuthorities": [
-          "ca.org1.example.com"
-        ]
+        "mspid": "Org1MSP", 
+        "peers": ["peer0.org1.example.com"], 
+        "certificateAuthorities": ["ca.org1.example.com"]
       }
     },
     "orderers": {
       "orderer.example.com": {
         "url": "grpc://localhost:7050"
       }
-    },
+    }, 
     "peers": {
       "peer0.org1.example.com": {
         "url": "grpc://localhost:7051",
@@ -61,16 +55,16 @@ export default class ComposerConnectionManager {
     },
     "certificateAuthorities": {
       "ca.org1.example.com": {
-        "url": "http://localhost:7054",
-        "caName": "ca.org1.example.com"
+        "url":"http://localhost:7054", 
+        "caName":"ca.org1.example.com"
       }
     }
   };
 
-  private cardStore: MongooseCardStore;
+  private cardStore: MongoCardStore;
 
   constructor(private database: IDatabase) {
-    this.cardStore = new MongooseCardStore(database);
+    this.cardStore = new MongoCardStore(database);
   }
 
   /**

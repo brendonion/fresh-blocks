@@ -71,6 +71,8 @@ export default class Server {
     // Create admin connection
     const connectionManager = new ComposerConnectionManager(database);
 
+    //await addAdminUser(database, config.hyperledger, connectionManager);
+
     // Handle api routes
     initApi(this.app, config, database, connectionManager);
   }
@@ -100,14 +102,14 @@ async function addAdminUser(database: any, hyperledgerConfig: any, connectionMan
   }
 
   const adminPassport = {
-    email: 'admin@freshblocks.com',
-    firstName: 'admin',
+    email: 'admin@freshblocks.card',
+    firstName: 'adminF',
     lastName: 'adminL',
     password: 'password',
   };
 
   // Save admin passport to database
-  await database.passportModel.remove({email: 'admin@freshblocks.com'});
+  await database.passportModel.remove({email: 'admin@freshblocks.card'});
   await database.passportModel.create(adminPassport);
 
   console.log(`Admin created`);
